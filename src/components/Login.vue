@@ -9,7 +9,7 @@
 import { authAnonymously } from '../firebase.js';
 
 export default {
-  name: 'LoginSection',
+  name: 'LoginComponent',
 
   methods: {
     async signIn() {

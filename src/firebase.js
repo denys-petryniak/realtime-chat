@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCecK3G5-oyvWNSB0SZsQ4W9fCwG2hWwiQ',
@@ -18,3 +18,5 @@ export const db = getFirestore(firebaseApp);
 export const storage = getStorage();
 export const auth = getAuth(firebaseApp);
 export const authAnonymously = () => signInAnonymously(auth);
+export const onAuthStateChangedHandler = (callback) =>
+  onAuthStateChanged(auth, callback);
