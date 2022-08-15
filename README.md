@@ -1,4 +1,6 @@
-# vue-firebase-chat
+# Vue Voxer
+
+A walkie-talkie style chat app with Vue & Firebase.
 
 ## Project setup
 ```
