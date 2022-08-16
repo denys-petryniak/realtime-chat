@@ -5,6 +5,7 @@
       <template v-slot:user="{ user }">
         <template v-if="user">
           <UserProfile :user="user" />
+          <ChatList :uid="user.uid" />
         </template>
         <Login v-else />
       </template>
@@ -16,6 +17,7 @@
 import Login from '@/components/Login';
 import User from '@/components/User';
 import UserProfile from '@/components/UserProfile';
+import ChatList from '@/components/ChatList';
 
 export default {
   name: 'HomePage',
@@ -24,6 +26,7 @@ export default {
     Login,
     User,
     UserProfile,
+    ChatList,
   },
 };
 </script>
