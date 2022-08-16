@@ -6,6 +6,8 @@ import {
   signInAnonymously,
   onAuthStateChanged,
   signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -22,7 +24,12 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage();
 export const auth = getAuth(firebaseApp);
+
 export const authAnonymously = () => signInAnonymously(auth);
 export const onAuthStateChangedHandler = (callback) =>
   onAuthStateChanged(auth, callback);
 export const signOutHandler = () => signOut(auth);
+export const createUserWithEmailAndPasswordHandler = ({ email, password }) =>
+  createUserWithEmailAndPassword(auth, email, password);
+export const signInWithEmailAndPasswordHandler = ({ email, password }) =>
+  signInWithEmailAndPassword(auth, email, password);
