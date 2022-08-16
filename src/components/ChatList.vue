@@ -1,15 +1,52 @@
 <template>
   <div>
+    <ul v-if="chats.length > 0">
+      <li v-for="chat of chats" :key="chat.id">
+        {{ chat.id }}
+      </li>
+    </ul>
     <button @click="createChatRoom()">Create New Chat Room</button>
   </div>
 </template>
 
 <script>
 import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+} from 'firebase/firestore';
 
 export default {
   props: ['uid'],
+
+  data() {
+    return {
+      chats: [],
+      unsubscribe: () => {},
+    };
+  },
+
+  created() {
+    const targetQuery = query(
+      collection(db, 'chats'),
+      where('owner', '==', this.uid)
+    );
+
+    this.unsubscribe = onSnapshot(targetQuery, (querySnapshot) => {
+      const chats = [];
+      querySnapshot.forEach((doc) => {
+        chats.push({ id: doc.id, ...doc.data() });
+      });
+      this.chats = chats;
+    });
+  },
+
+  beforeDestroy() {
+    this.unsubscribe();
+  },
 
   methods: {
     async createChatRoom() {
