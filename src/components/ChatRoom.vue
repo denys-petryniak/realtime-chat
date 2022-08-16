@@ -5,7 +5,10 @@
       <template #user="{ user }">
         <ul v-if="messages.length > 0">
           <li v-for="message of messages" :key="message.key">
-            {{ message.text }}
+            <ChatMessage
+              :message="message"
+              :owner="user.uid === message.sender"
+            />
           </li>
         </ul>
         <input v-model="newMessageText" class="input" />
@@ -24,6 +27,7 @@
 
 <script>
 import User from '@/components/User';
+import ChatMessage from '@/components/ChatMessage';
 import { db } from '../firebase';
 import {
   collection,
@@ -49,6 +53,7 @@ export default {
 
   components: {
     User,
+    ChatMessage,
   },
 
   computed: {
@@ -97,3 +102,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  background: #efefef;
+  padding: 10px;
+  border-radius: 0;
+}
+li {
+  display: flex;
+}
+</style>
