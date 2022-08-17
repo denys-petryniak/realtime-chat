@@ -4,15 +4,14 @@
       <h3>Sign in Anonymously</h3>
       <button class="button" @click="signIn">Sign In</button>
     </div>
+    <hr />
     <div v-if="newUser" class="field">
       <h3>Sign Up for a New Account</h3>
-      <a href="#" @click="newUser = false" class="button is-light"
-        >Returning user?</a
-      >
+      <a href="#" @click="newUser = false" class="button">Returning user?</a>
     </div>
     <div v-else class="field">
       <h3>Sign In with Email</h3>
-      <a href="#" @click="newUser = true" class="button is-light">New user?</a>
+      <a href="#" @click="newUser = true" class="button">New user?</a>
     </div>
     <div class="field">
       <label for="email" class="label">Email</label>

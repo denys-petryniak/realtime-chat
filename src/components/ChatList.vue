@@ -56,13 +56,11 @@ export default {
     async createChatRoom() {
       const chatsCollection = collection(db, 'chats');
 
-      const newChat = await addDoc(chatsCollection, {
+      await addDoc(chatsCollection, {
         createAt: Date.now(),
         owner: this.uid,
         members: [this.uid],
       });
-
-      console.log('newChat', newChat);
     },
   },
 };

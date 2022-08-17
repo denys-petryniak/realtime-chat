@@ -1,6 +1,7 @@
 <template>
   <div class="section">
     <h3 class="mb-5">Home</h3>
+    <hr />
     <User>
       <template v-slot:user="{ user }">
         <template v-if="user">
@@ -8,6 +9,7 @@
             <h4>User Profile</h4>
             <UserProfile :user="user" />
           </div>
+          <hr />
           <div class="mb-5">
             <h4>My Chat Rooms</h4>
             <ChatList :uid="user.uid" />

@@ -3,7 +3,8 @@
     <h3>
       Welcome to ChatRoom <code>{{ chatId }}</code>
     </h3>
-    <router-link to="/" class="button mb-3">Back</router-link>
+    <router-link to="/" class="button">Back</router-link>
+    <hr />
     <p class="is-size-5">
       Open this link in another browser window to chat
       <code>https://your-url.com/#/chats/{{ chatId }}</code>
@@ -11,7 +12,7 @@
     <User>
       <template #user="{ user }">
         <template v-if="user">
-          <ul v-if="messages.length > 0">
+          <ul v-if="messages.length > 0" class="has-background-white-ter">
             <li v-for="message of messages" :key="message.key">
               <ChatMessage
                 :message="message"
@@ -19,14 +20,26 @@
               />
             </li>
           </ul>
-          <input v-model="newMessageText" class="input" placeholder="Message" />
+          <textarea
+            v-model="newMessageText"
+            class="input mt-4 mb-4"
+            placeholder="Message"
+            @keyup.enter="addMessage(user.uid)"
+          ></textarea>
           <hr />
-          <h4>Record Audio</h4>
-          <button v-if="!recorder" @click="record()" class="button is-primary">
-            Record
-          </button>
-          <button v-else @click="stop()" class="button is-danger">Stop</button>
-          <br />
+          <div class="mb-5">
+            <h4>Record Audio</h4>
+            <button
+              v-if="!recorder"
+              @click="record()"
+              class="button is-primary"
+            >
+              Record
+            </button>
+            <button v-else @click="stop()" class="button is-danger">
+              Stop
+            </button>
+          </div>
           <audio v-if="newAudio" :src="newAudioURL" controls></audio>
           <hr />
           <button
@@ -187,17 +200,17 @@ export default {
 
 <style scoped>
 ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   min-width: 500px;
-  background: #efefef;
-  padding: 10px;
+  padding: 16px;
+  list-style-type: none;
+  margin: 0;
   border-radius: 0;
 }
-li {
-  display: flex;
+
+textarea {
+  height: 100px;
+  resize: none;
 }
 </style>
