@@ -34,7 +34,7 @@
 <script>
 import User from '@/components/User';
 import ChatMessage from '@/components/ChatMessage';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import {
   collection,
   query,
@@ -44,6 +44,7 @@ import {
   doc,
   setDoc,
 } from '@firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from '@firebase/storage';
 
 export default {
   name: 'ChatRoom',
@@ -100,15 +101,41 @@ export default {
     async addMessage(uid) {
       this.loading = true;
 
+      let audioURL = null;
+
       const messagesCollectionDocRef = doc(this.messagesCollection);
+
+      if (this.newAudio) {
+        const storageRef = ref(
+          storage,
+          `chats/${this.chatId}/${messagesCollectionDocRef.id}.wav`
+        );
+
+        await uploadBytes(storageRef, this.newAudio)
+          .then(() => {
+            return getDownloadURL(
+              ref(
+                storage,
+                `chats/${this.chatId}/${messagesCollectionDocRef.id}.wav`
+              )
+            );
+          })
+          .then((url) => {
+            audioURL = url;
+          })
+          .catch((error) => console.error(error));
+      }
+
       await setDoc(messagesCollectionDocRef, {
         text: this.newMessageText,
         sender: uid,
         createdAt: Date.now(),
+        audioURL,
       });
 
       this.loading = false;
       this.newMessageText = '';
+      this.newAudio = null;
     },
 
     async record() {
