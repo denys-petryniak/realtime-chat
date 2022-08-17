@@ -1,7 +1,7 @@
 <template>
   <div>
-    Logged in as {{ user.uid }}
-    <button @click="signOut">Sign Out</button>
+    <div class="mb-2">Logged in as {{ user.uid }}</div>
+    <button @click="signOut" class="button">Sign Out</button>
   </div>
 </template>
 

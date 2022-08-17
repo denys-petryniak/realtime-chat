@@ -7,7 +7,9 @@
         }}</router-link>
       </li>
     </ul>
-    <button @click="createChatRoom()">Create New Chat Room</button>
+    <button @click="createChatRoom()" class="button">
+      Create New Chat Room
+    </button>
   </div>
 </template>
 

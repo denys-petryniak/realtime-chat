@@ -1,31 +1,44 @@
 <template>
-  <main>
-    <h3>Welcome to ChatRoom {{ chatId }}</h3>
+  <main class="section">
+    <h3>
+      Welcome to ChatRoom <code>{{ chatId }}</code>
+    </h3>
+    <router-link to="/" class="button mb-3">Back</router-link>
+    <p class="is-size-5">
+      Open this link in another browser window to chat
+      <code>https://your-url.com/#/chats/{{ chatId }}</code>
+    </p>
     <User>
       <template #user="{ user }">
-        <ul v-if="messages.length > 0">
-          <li v-for="message of messages" :key="message.key">
-            <ChatMessage
-              :message="message"
-              :owner="user.uid === message.sender"
-            />
-          </li>
-        </ul>
-        <input v-model="newMessageText" class="input" />
-        <hr />
-        <h4>Record Audio</h4>
-        <button v-if="!recorder" @click="record()">Record</button>
-        <button v-else @click="stop()">Stop Record</button>
-        <audio v-if="newAudio" :src="newAudioURL" controls></audio>
-        <hr />
-        <button
-          :disabled="!newMessageText || loading"
-          class="button is-success"
-          type="text"
-          @click="addMessage(user.uid)"
-        >
-          Send
-        </button>
+        <template v-if="user">
+          <ul v-if="messages.length > 0">
+            <li v-for="message of messages" :key="message.key">
+              <ChatMessage
+                :message="message"
+                :owner="user.uid === message.sender"
+              />
+            </li>
+          </ul>
+          <input v-model="newMessageText" class="input" placeholder="Message" />
+          <hr />
+          <h4>Record Audio</h4>
+          <button v-if="!recorder" @click="record()" class="button is-primary">
+            Record
+          </button>
+          <button v-else @click="stop()" class="button is-danger">Stop</button>
+          <br />
+          <audio v-if="newAudio" :src="newAudioURL" controls></audio>
+          <hr />
+          <button
+            :disabled="(!newMessageText && !newAudio) || loading"
+            class="button is-success"
+            type="text"
+            @click="addMessage(user.uid)"
+          >
+            Send
+          </button>
+        </template>
+        <Login v-else />
       </template>
     </User>
   </main>
@@ -34,6 +47,7 @@
 <script>
 import User from '@/components/User';
 import ChatMessage from '@/components/ChatMessage';
+import Login from '@/components/Login';
 import { db, storage } from '../firebase';
 import {
   collection,
@@ -63,6 +77,7 @@ export default {
   components: {
     User,
     ChatMessage,
+    Login,
   },
 
   computed: {
@@ -158,7 +173,6 @@ export default {
 
       this.recorder.addEventListener('stop', () => {
         this.newAudio = new Blob(recordedChunks);
-        console.log('this.newAudio', this.newAudio);
       });
 
       this.recorder.start();

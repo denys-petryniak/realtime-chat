@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <h3>Home</h3>
+  <div class="section">
+    <h3 class="mb-5">Home</h3>
     <User>
       <template v-slot:user="{ user }">
         <template v-if="user">
-          <UserProfile :user="user" />
-          <ChatList :uid="user.uid" />
+          <div class="mb-5">
+            <h4>User Profile</h4>
+            <UserProfile :user="user" />
+          </div>
+          <div class="mb-5">
+            <h4>My Chat Rooms</h4>
+            <ChatList :uid="user.uid" />
+          </div>
         </template>
         <Login v-else />
       </template>

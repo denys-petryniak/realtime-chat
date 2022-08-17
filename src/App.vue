@@ -1,17 +1,14 @@
 <template>
-  <div id="app">
-    <header>
-      <h1>Vue Voxer</h1>
-      <p>Realtime Voice Chat</p>
+  <div id="app" class="container">
+    <header class="section pb-0 has-text-centered">
+      <h1 class="title">Vue Voxer</h1>
+      <h2 class="subtitle">Realtime Voice Chat</h2>
     </header>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { auth } from './firebase';
-console.log('auth', auth);
-
 export default {
   name: 'App',
 };

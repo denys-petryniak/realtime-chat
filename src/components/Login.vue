@@ -1,33 +1,41 @@
 <template>
-  <aside class="section">
-    <h3>Sign in Anonymously</h3>
-    <button class="button" @click="signIn">Sign In</button>
-    <div v-if="newUser">
+  <aside class="box">
+    <div class="field">
+      <h3>Sign in Anonymously</h3>
+      <button class="button" @click="signIn">Sign In</button>
+    </div>
+    <div v-if="newUser" class="field">
       <h3>Sign Up for a New Account</h3>
-      <a href="#" @click="newUser = false">Returning user?</a>
+      <a href="#" @click="newUser = false" class="button is-light"
+        >Returning user?</a
+      >
     </div>
-    <div v-else>
+    <div v-else class="field">
       <h3>Sign In with Email</h3>
-      <a href="#" @click="newUser = true">New user?</a>
+      <a href="#" @click="newUser = true" class="button is-light">New user?</a>
     </div>
-    <label for="email">Email</label><br />
-    <input
-      v-model="email"
-      placeholder="email"
-      type="email"
-      class="input"
-      id="email"
-    />
-    <label for="password">Password</label><br />
-    <input
-      v-model="password"
-      placeholder="password"
-      type="password"
-      class="input"
-      id="password"
-    />
+    <div class="field">
+      <label for="email" class="label">Email</label>
+      <input
+        v-model="email"
+        placeholder="email"
+        type="email"
+        class="input"
+        id="email"
+      />
+    </div>
+    <div class="field">
+      <label for="password" class="label">Password</label>
+      <input
+        v-model="password"
+        placeholder="password"
+        type="password"
+        class="input"
+        id="password"
+      />
+    </div>
     <button
-      class="button is-info"
+      class="button is-primary"
       :class="{ 'is-loading': loading }"
       @click="signInOrCreateUser"
     >
