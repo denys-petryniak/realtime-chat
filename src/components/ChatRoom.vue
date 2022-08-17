@@ -7,7 +7,7 @@
     <hr />
     <p class="is-size-5">
       Open this link in another browser window to chat
-      <code>https://your-url.com/#/chats/{{ chatId }}</code>
+      <code>{{ getCurrentLocation }}</code>
     </p>
     <User>
       <template #user="{ user }">
@@ -94,6 +94,9 @@ export default {
   },
 
   computed: {
+    getCurrentLocation() {
+      return window.location.href;
+    },
     chatId() {
       return this.$route.params.id;
     },
