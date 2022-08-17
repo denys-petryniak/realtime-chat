@@ -15,13 +15,7 @@
 
 <script>
 import { db } from '../firebase';
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  onSnapshot,
-} from 'firebase/firestore';
+import { collection, addDoc, query, onSnapshot } from 'firebase/firestore';
 
 export default {
   props: ['uid'],
@@ -34,10 +28,7 @@ export default {
   },
 
   created() {
-    const targetQuery = query(
-      collection(db, 'chats'),
-      where('owner', '==', this.uid)
-    );
+    const targetQuery = query(collection(db, 'chats'));
 
     this.unsubscribe = onSnapshot(targetQuery, (querySnapshot) => {
       const chats = [];
