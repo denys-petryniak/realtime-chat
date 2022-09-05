@@ -1,9 +1,5 @@
 # Vue Voxer
 
-A walkie-talkie style chat app with Vue & Firebase.
-
-[DEMO](https://vue-realtime-chat.netlify.app/)
-
 ## Project setup
 ```
 npm install
