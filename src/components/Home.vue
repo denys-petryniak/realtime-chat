@@ -1,7 +1,5 @@
 <template>
   <div class="section">
-    <h3 class="mb-5">Home</h3>
-    <hr />
     <User>
       <template v-slot:user="{ user }">
         <template v-if="user">
@@ -22,19 +20,14 @@
 </template>
 
 <script>
+export default {
+  name: 'HomePage',
+};
+</script>
+
+<script setup>
 import Login from '@/components/Login';
 import User from '@/components/User';
 import UserProfile from '@/components/UserProfile';
 import ChatList from '@/components/ChatList';
-
-export default {
-  name: 'HomePage',
-
-  components: {
-    Login,
-    User,
-    UserProfile,
-    ChatList,
-  },
-};
 </script>

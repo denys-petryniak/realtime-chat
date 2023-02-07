@@ -1,17 +1,16 @@
 <template>
   <aside class="box">
     <div class="field">
-      <h3>Sign in Anonymously</h3>
-      <button class="button" @click="signIn">Sign In</button>
+      <h3 class="has-text-centered">Sign in Anonymously</h3>
+      <div class="buttons is-centered">
+        <button class="button" @click="signIn">Sign In</button>
+      </div>
     </div>
     <hr />
-    <div v-if="newUser" class="field">
-      <h3>Sign Up for a New Account</h3>
-      <a href="#" @click="newUser = false" class="button">Returning user?</a>
-    </div>
-    <div v-else class="field">
-      <h3>Sign In with Email</h3>
-      <a href="#" @click="newUser = true" class="button">New user?</a>
+    <div class="field">
+      <h3 class="has-text-centered">
+        {{ newUser ? 'Sign Up for a New Account' : 'Sign In with Email' }}
+      </h3>
     </div>
     <div class="field">
       <label for="email" class="label">Email</label>
@@ -33,14 +32,28 @@
         id="password"
       />
     </div>
-    <button
-      class="button is-primary"
-      :class="{ 'is-loading': loading }"
-      @click="signInOrCreateUser"
-    >
-      {{ newUser ? 'Sign Up' : 'Login' }}
-    </button>
-    <p class="has-text-danger" v-if="errorMessage">{{ errorMessage }}</p>
+    <div class="field is-grouped is-grouped-centered">
+      <p class="control">
+        <button
+          type="button"
+          class="button is-primary"
+          :class="{ 'is-loading': loading }"
+          @click="signInOrCreateUser"
+        >
+          {{ newUser ? 'Sign Up' : 'Login' }}
+        </button>
+      </p>
+      <p class="control">
+        <button type="button" class="button" @click="newUser = !newUser">
+          {{ newUser ? 'Returning user?' : 'New user?' }}
+        </button>
+      </p>
+    </div>
+    <article v-if="errorMessage" class="message is-danger is-small">
+      <div class="message-body">
+        {{ errorMessage }}
+      </div>
+    </article>
   </aside>
 </template>
 

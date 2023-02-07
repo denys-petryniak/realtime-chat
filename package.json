@@ -1,5 +1,5 @@
 {
-  "name": "vue-firebase-chat",
+  "name": "realtime-chat",
   "version": "0.1.0",
   "private": true,
   "scripts": {
