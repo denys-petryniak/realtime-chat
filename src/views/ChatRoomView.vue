@@ -20,7 +20,6 @@ import { db } from '../firebase';
 
 import UserContainer from '@/components/UserContainer.vue';
 import ChatMessage from '@/components/ChatMessage.vue';
-// import LoginForm from '@/components/LoginForm.vue';
 
 const storage = useFirebaseStorage();
 
@@ -35,11 +34,11 @@ const getCurrentLocation = computed(() => {
   return window.location.href;
 });
 
-const chatId = computed(() => {
+const getChatId = computed(() => {
   return route.params.id;
 });
 
-const messagesCollection = collection(db, 'chats', chatId.value, 'messages');
+const messagesCollection = collection(db, 'chats', getChatId.value, 'messages');
 
 const messagesQuery = query(
   messagesCollection,
@@ -80,7 +79,7 @@ const addMessage = async (uid) => {
   if (newAudio.value) {
     const audioStorageRef = storageRef(
       storage,
-      `chats/${chatId.value}/${messagesCollectionDocRef.id}.wav`
+      `chats/${getChatId.value}/${messagesCollectionDocRef.id}.wav`
     );
 
     try {
@@ -142,7 +141,8 @@ const stop = async () => {
   <main class="section">
     <div class="is-flex is-align-items-center">
       <div class="is-size-5">
-        Welcome to ChatRoom <code class="has-text-primary">{{ chatId }}</code>
+        Welcome to ChatRoom
+        <code class="has-text-primary">{{ getChatId }}</code>
       </div>
       <router-link to="/chats" class="button is-info ml-auto">Back</router-link>
     </div>
@@ -160,7 +160,6 @@ const stop = async () => {
             </article>
           </template>
           <template v-else-if="messages.length">
-            {{ isMessagesLoading }}
             <ul class="mb-5 has-background-white-ter">
               <li v-for="message of messages" :key="message.key" class="mb-2">
                 <ChatMessage
@@ -203,7 +202,6 @@ const stop = async () => {
           </div>
           <audio v-if="newAudio" :src="newAudioURL" controls></audio>
         </template>
-        <!-- <LoginForm v-else /> -->
       </template>
     </UserContainer>
   </main>

@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { useCollection } from 'vuefire';
-import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { addDoc } from 'firebase/firestore';
 
-const props = defineProps(['uid']);
-
-const chats = useCollection(collection(db, 'chats'));
+const props = defineProps(['chatsCollection', 'chats', 'uid']);
 
 const createChatRoom = async () => {
-  const chatsCollection = collection(db, 'chats');
-
-  await addDoc(chatsCollection, {
-    createAt: Date.now(),
+  await addDoc(props.chatsCollection, {
+    createdAt: Date.now(),
     owner: props.uid,
     members: [props.uid],
   });
