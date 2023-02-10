@@ -45,9 +45,9 @@ npm run lint
 
 ## Firebase settings
 
-### Storage rules:
+### Storage rules
 
-```
+```sh
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
@@ -58,9 +58,9 @@ service firebase.storage {
 }
 ```
 
-### Firestore rules:
+### Firestore rules
 
-```
+```sh
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
