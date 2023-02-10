@@ -1,4 +1,4 @@
-# Realtime Chat
+# Realtime Voice Chat
 
 ## Recommended IDE Setup
 
