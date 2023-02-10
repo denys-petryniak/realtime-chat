@@ -1,6 +1,4 @@
-# vue-realtime-chat
-
-This template should help get you started developing with Vue 3 in Vite.
+# Realtime Chat
 
 ## Recommended IDE Setup
 
@@ -43,4 +41,33 @@ npm run build
 
 ```sh
 npm run lint
+```
+
+## Firebase settings
+
+### Storage rules:
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth.uid != null;
+    }
+  }
+}
+```
+
+### Firestore rules:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if
+          request.auth.uid != null;
+    }
+  }
+}
 ```
