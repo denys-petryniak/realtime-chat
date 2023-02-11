@@ -10,12 +10,12 @@ import {
 } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCecK3G5-oyvWNSB0SZsQ4W9fCwG2hWwiQ',
-  authDomain: 'vue-firebase-chat-577b3.firebaseapp.com',
-  projectId: 'vue-firebase-chat-577b3',
-  storageBucket: 'vue-firebase-chat-577b3.appspot.com',
-  messagingSenderId: '338901674791',
-  appId: '1:338901674791:web:38c7814bb9e0c583e15702',
+  appId: import.meta.env.VITE_APP_ID,
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_API_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
