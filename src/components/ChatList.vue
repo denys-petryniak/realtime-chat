@@ -1,58 +1,38 @@
+<script setup lang="ts">
+import { addDoc } from 'firebase/firestore';
+import { Constants } from '../constants';
+
+const props = defineProps(['chatsCollection', 'chats', 'uid']);
+
+const createChatRoom = async () => {
+  if (props.chats.length >= Constants.CHATS_LIMIT) {
+    alert(`Max number of chats is ${Constants.CHATS_LIMIT}`);
+    return;
+  }
+
+  await addDoc(props.chatsCollection, {
+    createdAt: Date.now(),
+    owner: props.uid,
+    members: [props.uid],
+  });
+};
+</script>
+
 <template>
   <div>
-    <ul v-if="chats.length > 0">
-      <li v-for="chat of chats" :key="chat.id">
+    <ul v-if="chats.length > 0" class="mb-4">
+      <li
+        v-for="chat of chats"
+        :key="chat.id"
+        class="mb-2 is-size-5 has-text-primary"
+      >
         <router-link :to="{ name: 'chat', params: { id: chat.id } }">{{
           chat.id
         }}</router-link>
       </li>
     </ul>
-    <button @click="createChatRoom()" class="button">
+    <button type="button" @click="createChatRoom()" class="button is-info">
       Create New Chat Room
     </button>
   </div>
 </template>
-
-<script>
-import { db } from '../firebase';
-import { collection, addDoc, query, onSnapshot } from 'firebase/firestore';
-
-export default {
-  props: ['uid'],
-
-  data() {
-    return {
-      chats: [],
-      unsubscribe: () => {},
-    };
-  },
-
-  created() {
-    const targetQuery = query(collection(db, 'chats'));
-
-    this.unsubscribe = onSnapshot(targetQuery, (querySnapshot) => {
-      const chats = [];
-      querySnapshot.forEach((doc) => {
-        chats.push({ id: doc.id, ...doc.data() });
-      });
-      this.chats = chats;
-    });
-  },
-
-  beforeDestroy() {
-    this.unsubscribe();
-  },
-
-  methods: {
-    async createChatRoom() {
-      const chatsCollection = collection(db, 'chats');
-
-      await addDoc(chatsCollection, {
-        createAt: Date.now(),
-        owner: this.uid,
-        members: [this.uid],
-      });
-    },
-  },
-};
-</script>

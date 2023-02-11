@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineProps(['message', 'owner']);
+</script>
+
 <template>
   <div class="message" :class="{ 'from-user': owner }">
     <div class="mb-3">{{ message.text }}</div>
@@ -10,12 +14,6 @@
     <div class="sender">from UID {{ message.sender }}</div>
   </div>
 </template>
-
-<script>
-export default {
-  props: ['message', 'owner'],
-};
-</script>
 
 <style scoped>
 .message {
