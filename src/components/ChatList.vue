@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { addDoc } from 'firebase/firestore';
+import { Constants } from '../constants';
 
 const props = defineProps(['chatsCollection', 'chats', 'uid']);
 
 const createChatRoom = async () => {
+  if (props.chats.length >= Constants.CHATS_LIMIT) {
+    alert(`Max number of chats is ${Constants.CHATS_LIMIT}`);
+    return;
+  }
+
   await addDoc(props.chatsCollection, {
     createdAt: Date.now(),
     owner: props.uid,

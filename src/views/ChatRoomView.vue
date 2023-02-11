@@ -1,29 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-
-import {
-  collection,
-  doc,
-  setDoc,
-  query,
-  orderBy,
-  limit,
-} from '@firebase/firestore';
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from '@firebase/storage';
-import { useCollection, useFirebaseStorage } from 'vuefire';
-import { db } from '../firebase';
+import { useMessagesStore } from '@/stores/messages';
+import { uploadBytes, getDownloadURL } from '@firebase/storage';
+import { Constants } from '../constants';
 
 import UserContainer from '@/components/UserContainer.vue';
 import ChatMessage from '@/components/ChatMessage.vue';
 
-const storage = useFirebaseStorage();
-
 const route = useRoute();
+const getChatId = computed(() => {
+  return route.params.id;
+});
+
+const messagesStore = useMessagesStore();
+const { getMessages, setNewMessageDoc, getAudioStorageRef } = messagesStore;
+
+const { messages, loading: isMessagesLoading } = getMessages(getChatId.value);
 
 const newMessageText = ref('');
 const newAudio = ref(null);
@@ -34,74 +27,46 @@ const getCurrentLocation = computed(() => {
   return window.location.href;
 });
 
-const getChatId = computed(() => {
-  return route.params.id;
-});
-
-const messagesCollection = collection(db, 'chats', getChatId.value, 'messages');
-
-const messagesQuery = query(
-  messagesCollection,
-  orderBy('createdAt'),
-  limit(100)
-);
-
-const {
-  // rename the Ref to something more meaningful
-  data: messages,
-  // is the subscription still pending?
-  pending,
-  // did the subscription fail?
-  error,
-  // A promise that resolves or rejects when the initial state is loaded
-  promise: messagesPromise,
-} = useCollection(messagesQuery, {
-  wait: true,
-});
-
-const isMessagesLoading = ref(true);
-
-messagesPromise.value.then(() => {
-  isMessagesLoading.value = false;
-});
-
 const newAudioURL = computed(() => {
-  return URL.createObjectURL(newAudio.value);
+  return window.URL.createObjectURL(newAudio.value);
 });
+
+const clearState = () => {
+  loading.value = false;
+  newMessageText.value = '';
+  newAudio.value = null;
+};
 
 const addMessage = async (uid) => {
+  if (messages.value.length >= Constants.MESSAGES_limit) {
+    clearState();
+    alert(`Max number of messages is ${Constants.MESSAGES_limit}`);
+    return;
+  }
+
   loading.value = true;
 
   let audioURL = null;
 
-  const messagesCollectionDocRef = doc(messagesCollection);
-
   if (newAudio.value) {
-    const audioStorageRef = storageRef(
-      storage,
-      `chats/${getChatId.value}/${messagesCollectionDocRef.id}.wav`
-    );
-
     try {
-      await uploadBytes(audioStorageRef, newAudio.value);
-      const url = await getDownloadURL(audioStorageRef);
+      const audioStorageRef = getAudioStorageRef(getChatId.value);
 
-      audioURL = url;
+      await uploadBytes(audioStorageRef, newAudio.value);
+      audioURL = await getDownloadURL(audioStorageRef);
     } catch (error) {
       console.error(error);
     }
   }
 
-  await setDoc(messagesCollectionDocRef, {
+  await setNewMessageDoc({
+    id: getChatId.value,
     text: newMessageText.value,
     sender: uid,
-    createdAt: Date.now(),
     audioURL,
   });
 
-  loading.value = false;
-  newMessageText.value = '';
-  newAudio.value = null;
+  clearState();
 };
 
 const record = async () => {
@@ -130,8 +95,6 @@ const record = async () => {
 };
 
 const stop = async () => {
-  console.log('newAudio.value', newAudio.value);
-
   recorder.value.stop();
   recorder.value = null;
 };
