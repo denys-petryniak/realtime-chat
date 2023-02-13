@@ -56,12 +56,13 @@ export const useMessagesStore = defineStore('messages', () => {
       `chats/${id}/${getMessagesCollectionDocRef(id).id}.wav`
     );
 
-  const setNewMessageDoc = ({ id, text, sender, audioURL }) =>
+  const setNewMessageDoc = ({ id, text, sender, audioURL, uid }) =>
     setDoc(getMessagesCollectionDocRef(id), {
       createdAt: Date.now(),
       text,
       audioURL,
       sender,
+      uid,
     });
 
   return {

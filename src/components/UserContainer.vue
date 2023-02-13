@@ -7,6 +7,6 @@ const { currentUser } = userStore;
 
 <template>
   <div>
-    <slot name="user" :user="currentUser"></slot>
+    <slot name="user" :user="currentUser" />
   </div>
 </template>

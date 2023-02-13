@@ -11,7 +11,7 @@ defineProps(['message', 'owner']);
       controls
       class="mb-3"
     ></audio>
-    <div class="sender">from UID {{ message.sender }}</div>
+    <div class="sender">from {{ message.sender }}</div>
   </div>
 </template>
 

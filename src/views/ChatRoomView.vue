@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useMessagesStore } from '@/stores/messages';
 import { uploadBytes, getDownloadURL } from '@firebase/storage';
+import { useUserStore } from '@/stores/user';
+import { useMessagesStore } from '@/stores/messages';
 import { Constants } from '../constants';
 
 import UserContainer from '@/components/UserContainer.vue';
@@ -17,6 +18,9 @@ const messagesStore = useMessagesStore();
 const { getMessages, setNewMessageDoc, getAudioStorageRef } = messagesStore;
 
 const { messages, loading: isMessagesLoading } = getMessages(getChatId.value);
+
+const userStore = useUserStore();
+const { getUserName } = userStore;
 
 const newMessageText = ref('');
 const newAudio = ref(null);
@@ -62,8 +66,9 @@ const addMessage = async (uid) => {
   await setNewMessageDoc({
     id: getChatId.value,
     text: newMessageText.value,
-    sender: uid,
+    sender: getUserName,
     audioURL,
+    uid,
   });
 
   clearState();
@@ -98,6 +103,15 @@ const stop = async () => {
   recorder.value.stop();
   recorder.value = null;
 };
+
+async function copyLinkToClipboard() {
+  try {
+    await navigator.clipboard.writeText(getCurrentLocation.value);
+    alert('Link copied to clipboard');
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+}
 </script>
 
 <template>
@@ -112,7 +126,12 @@ const stop = async () => {
     <hr />
     <p class="mb-5 is-size-5 has-text-centered">
       Open this link in another browser window to chat
-      <code class="has-text-primary">{{ getCurrentLocation }}</code>
+      <code
+        class="code has-text-primary"
+        title="Copy to clipboard"
+        @click="copyLinkToClipboard"
+        >{{ getCurrentLocation }}</code
+      >
     </p>
     <UserContainer>
       <template #user="{ user }">
@@ -127,7 +146,7 @@ const stop = async () => {
               <li v-for="message of messages" :key="message.key" class="mb-2">
                 <ChatMessage
                   :message="message"
-                  :owner="user.uid === message.sender"
+                  :owner="user.uid === message.uid"
                 />
               </li>
             </ul>
@@ -184,5 +203,9 @@ ul {
 textarea {
   height: 40px;
   resize: none;
+}
+
+.code {
+  cursor: pointer;
 }
 </style>

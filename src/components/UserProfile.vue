@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 import { signOutHandler } from '../firebase';
 
-const props = defineProps(['user']);
+defineProps(['user']);
 
 const router = useRouter();
 const route = useRoute();
@@ -20,9 +20,8 @@ const signOut = async () => {
   }
 };
 
-const getUserName = computed(
-  () => props.user.displayName ?? props.user.email ?? props.user.uid
-);
+const userStore = useUserStore();
+const { getUserName } = userStore;
 </script>
 
 <template>
