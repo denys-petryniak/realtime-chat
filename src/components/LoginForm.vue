@@ -103,7 +103,7 @@ const signInOrCreateUser = async () => {
       <p class="control">
         <button
           type="button"
-          class="button is-info"
+          class="button is-text"
           @click="isNewUser = !isNewUser"
         >
           {{ isNewUser ? 'Returning user?' : 'New user?' }}
