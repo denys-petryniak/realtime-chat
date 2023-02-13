@@ -17,7 +17,7 @@ const { ownedChats, unownedChats, loading, error } = getChats(currentUser?.uid);
 <template>
   <div class="section">
     <UserContainer>
-      <template v-slot:user="{ user }">
+      <template #user="{ user }">
         <template v-if="user">
           <UserProfile :user="user" />
           <hr />
@@ -35,9 +35,9 @@ const { ownedChats, unownedChats, loading, error } = getChats(currentUser?.uid);
             </template>
             <template v-else>
               <ChatList
-                :chatsCollection="chatsCollection"
-                :ownedChats="ownedChats"
-                :unownedChats="unownedChats"
+                :chats-collection="chatsCollection"
+                :owned-chats="ownedChats"
+                :unowned-chats="unownedChats"
                 :uid="user.uid"
               />
             </template>

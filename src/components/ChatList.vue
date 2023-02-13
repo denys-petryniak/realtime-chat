@@ -66,7 +66,7 @@ const createChatRoom = async () => {
         <div class="message-body">No chats...</div>
       </article>
     </template>
-    <button type="button" @click="createChatRoom()" class="button is-info">
+    <button type="button" class="button is-info" @click="createChatRoom">
       Create New Chat Room
     </button>
   </div>

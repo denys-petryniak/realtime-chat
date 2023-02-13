@@ -72,21 +72,21 @@ const signInOrCreateUser = async () => {
     <div class="field">
       <label for="email" class="label">Email</label>
       <input
+        id="email"
         v-model="email"
         placeholder="email"
         type="email"
         class="input"
-        id="email"
       />
     </div>
     <div class="field">
       <label for="password" class="label">Password</label>
       <input
+        id="password"
         v-model="password"
         placeholder="password"
         type="password"
         class="input"
-        id="password"
       />
     </div>
     <div class="field is-grouped is-grouped-centered">
