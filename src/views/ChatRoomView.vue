@@ -104,14 +104,14 @@ const stop = async () => {
   recorder.value = null;
 };
 
-async function copyLinkToClipboard() {
+const copyLinkToClipboard = async () => {
   try {
     await navigator.clipboard.writeText(getCurrentLocation.value);
     alert('Link copied to clipboard');
   } catch (err) {
-    console.error('Failed to copy text: ', err);
+    alert(`Failed to copy link: ${err}`);
   }
-}
+};
 </script>
 
 <template>
@@ -124,15 +124,20 @@ async function copyLinkToClipboard() {
       <router-link to="/chats" class="button is-info ml-auto">Back</router-link>
     </div>
     <hr />
-    <p class="mb-5 is-size-5 has-text-centered">
-      Open this link in another browser window to chat
-      <code
-        class="code has-text-primary"
-        title="Copy to clipboard"
-        @click="copyLinkToClipboard"
-        >{{ getCurrentLocation }}</code
-      >
-    </p>
+    <div class="mb-5 pl-6 pr-6">
+      <p class="is-size-5 has-text-centered">
+        Open this link in another browser window to chat
+      </p>
+      <p class="is-size-5 has-text-centered">
+        <code
+          class="code has-text-primary"
+          title="Copy to clipboard"
+          @click="copyLinkToClipboard"
+        >
+          {{ getCurrentLocation }}
+        </code>
+      </p>
+    </div>
     <UserContainer>
       <template #user="{ user }">
         <template v-if="user">
@@ -182,7 +187,12 @@ async function copyLinkToClipboard() {
               </button>
             </div>
           </div>
-          <audio v-if="newAudio" :src="newAudioURL" controls></audio>
+          <audio
+            v-if="newAudio"
+            :src="newAudioURL"
+            controls
+            class="audio"
+          ></audio>
         </template>
       </template>
     </UserContainer>
@@ -207,5 +217,10 @@ textarea {
 
 .code {
   cursor: pointer;
+  word-break: break-all;
+}
+
+.audio {
+  width: 100%;
 }
 </style>
