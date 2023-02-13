@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useCurrentUser } from 'vuefire';
+import { useUserStore } from '@/stores/user';
 
-const user = useCurrentUser();
+const userStore = useUserStore();
+const { currentUser } = userStore;
 </script>
 
 <template>
   <div>
-    <slot name="user" :user="user"></slot>
+    <slot name="user" :user="currentUser"></slot>
   </div>
 </template>
