@@ -49,3 +49,8 @@ export interface MessagesStore {
     uid,
   }: Message) => Promise<void>;
 }
+
+export interface UserStore {
+  currentUser: any; // temporary
+  getUserName: Ref<string | undefined>;
+}
