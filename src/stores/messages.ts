@@ -12,34 +12,31 @@ import {
 import { ref as storageRef } from '@firebase/storage';
 import { db } from '../firebase';
 import { Constants } from '../constants';
+import type { Message, MessagesStore } from '@/types';
 
-export const useMessagesStore = defineStore('messages', () => {
+export const useMessagesStore = defineStore('messages', (): MessagesStore => {
   const storage = useFirebaseStorage();
 
-  const getMessagesCollection = (id) => collection(db, 'chats', id, 'messages');
+  const getMessagesCollection = (id: string) =>
+    collection(db, 'chats', id, 'messages');
 
-  const getMessagesCollectionDocRef = (id) => doc(getMessagesCollection(id));
+  const getMessagesCollectionDocRef = (id: string) =>
+    doc(getMessagesCollection(id));
 
-  const getMessagesQuery = (id) =>
+  const getMessagesQuery = (id: string) =>
     query(
       getMessagesCollection(id),
       orderBy('createdAt'),
       limit(Constants.MESSAGES_limit)
     );
 
-  const getMessages = (id) => {
-    const {
-      // rename the Ref to something more meaningful
-      data: messages,
-      // is the subscription still pending?
-      pending,
-      // did the subscription fail?
-      error,
-      // A promise that resolves or rejects when the initial state is loaded
-      promise: messagesPromise,
-    } = useCollection(getMessagesQuery(id), {
-      wait: true,
-    });
+  const getMessages = (id: string) => {
+    const { data: messages, promise: messagesPromise } = useCollection<Message>(
+      getMessagesQuery(id),
+      {
+        wait: true,
+      }
+    );
 
     const loading = ref(true);
 
@@ -50,13 +47,13 @@ export const useMessagesStore = defineStore('messages', () => {
     return { messages, loading };
   };
 
-  const getAudioStorageRef = (id) =>
+  const getAudioStorageRef = (id: string) =>
     storageRef(
       storage,
       `chats/${id}/${getMessagesCollectionDocRef(id).id}.wav`
     );
 
-  const setNewMessageDoc = ({ id, text, sender, audioURL, uid }) =>
+  const setNewMessageDoc = ({ id, text, sender, audioURL, uid }: Message) =>
     setDoc(getMessagesCollectionDocRef(id), {
       createdAt: Date.now(),
       text,

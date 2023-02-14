@@ -2,9 +2,9 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useCollection } from 'vuefire';
 import { collection, query, orderBy, limit, where } from 'firebase/firestore';
-import { db } from '../firebase';
-import { Constants } from '../constants';
-import type { Chat, ChatsStore } from '../types';
+import { db } from '@/firebase';
+import { Constants } from '@/constants';
+import type { Chat, ChatsStore } from '@/types';
 
 export const useChatsStore = defineStore('chats', (): ChatsStore => {
   const chatsCollection = collection(db, 'chats');

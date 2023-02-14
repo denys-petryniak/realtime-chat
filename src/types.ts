@@ -1,5 +1,11 @@
 import type { Ref } from 'vue';
-import type { collection } from 'firebase/firestore';
+import type {
+  collection,
+  DocumentReference,
+  DocumentData,
+} from 'firebase/firestore';
+import type { StorageReference } from 'firebase/storage';
+
 export interface Chat {
   id: string;
   owner: string;
@@ -17,4 +23,29 @@ export interface ChatsStore {
     loading: Ref<boolean>;
     error: Ref<Error | null>;
   };
+}
+
+export interface Message {
+  uid: string;
+  id: string;
+  sender: string;
+  createdAt: number;
+  text: string;
+  audioURL: string;
+}
+
+export interface MessagesStore {
+  getMessagesCollectionDocRef: (id: string) => DocumentReference<DocumentData>;
+  getMessages: (id: string) => {
+    messages: Ref<Message[]>;
+    loading: Ref<boolean>;
+  };
+  getAudioStorageRef: (id: string) => StorageReference;
+  setNewMessageDoc: ({
+    id,
+    text,
+    sender,
+    audioURL,
+    uid,
+  }: Message) => Promise<void>;
 }
