@@ -1,24 +1,15 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { useCollection, firestoreDefaultConverter } from 'vuefire';
+import { useCollection } from 'vuefire';
 import { collection, query, orderBy, limit, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Constants } from '../constants';
-import type { Chat } from '../types';
+import type { Chat, ChatsStore } from '../types';
 
-export const useChatsStore = defineStore('chats', () => {
-  // const chatsCollection = collection(db, 'chats').withConverter<Chat>({
-  //   fromFirestore: (snapshot) => {
-  //     const data = firestoreDefaultConverter.fromFirestore(snapshot);
-  //     if (!data) return null;
-  //     return data;
-  //   },
-  //   toFirestore: firestoreDefaultConverter.toFirestore,
-  // });
-
+export const useChatsStore = defineStore('chats', (): ChatsStore => {
   const chatsCollection = collection(db, 'chats');
 
-  const getOwnedChatsQuery = (id) =>
+  const getOwnedChatsQuery = (id: string) =>
     query(
       chatsCollection,
       where('owner', '==', id),
@@ -26,7 +17,7 @@ export const useChatsStore = defineStore('chats', () => {
       limit(Constants.CHATS_LIMIT)
     );
 
-  const getUnownedChatsQuery = (id) =>
+  const getUnownedChatsQuery = (id: string) =>
     query(
       chatsCollection,
       where('owner', '!=', id),
@@ -35,23 +26,19 @@ export const useChatsStore = defineStore('chats', () => {
       limit(Constants.CHATS_LIMIT)
     );
 
-  const getChats = (id) => {
+  const getChats = (id: string) => {
     const loading = ref(true);
-    const error = ref(null);
+    const error = ref<Error | null>(null);
 
-    const { data: ownedChats, promise: ownedChatsPromise } = useCollection(
-      getOwnedChatsQuery(id),
-      {
+    const { data: ownedChats, promise: ownedChatsPromise } =
+      useCollection<Chat>(getOwnedChatsQuery(id), {
         wait: true,
-      }
-    );
+      });
 
-    const { data: unownedChats, promise: unownedChatsPromise } = useCollection(
-      getUnownedChatsQuery(id),
-      {
+    const { data: unownedChats, promise: unownedChatsPromise } =
+      useCollection<Chat>(getUnownedChatsQuery(id), {
         wait: true,
-      }
-    );
+      });
 
     Promise.all([ownedChatsPromise.value, unownedChatsPromise.value])
       .then(() => {
