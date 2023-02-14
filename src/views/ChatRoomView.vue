@@ -140,14 +140,14 @@ const copyLinkToClipboard = async () => {
     </div>
     <UserContainer>
       <template #user="{ user }">
-        <template v-if="user">
+        <div v-if="user" class="box">
           <template v-if="isMessagesLoading">
             <article class="message is-info">
               <div class="message-body">Loading...</div>
             </article>
           </template>
           <template v-else-if="messages.length">
-            <ul class="mb-5 has-background-white-ter">
+            <ul class="mb-5">
               <li v-for="message of messages" :key="message.key" class="mb-2">
                 <ChatMessage
                   :message="message"
@@ -193,7 +193,7 @@ const copyLinkToClipboard = async () => {
             controls
             class="audio"
           ></audio>
-        </template>
+        </div>
       </template>
     </UserContainer>
   </main>
@@ -222,5 +222,6 @@ textarea {
 
 .audio {
   width: 100%;
+  /* background-color: beige; */
 }
 </style>

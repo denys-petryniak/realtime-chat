@@ -22,16 +22,17 @@ defineProps(['message', 'owner']);
   margin-left: 0;
   margin-right: auto;
   padding: 12px;
-  background: #dddddd;
-  color: #000;
-  border-radius: 6px;
+  background-color: #efefef;
+  color: #131313;
+  font-weight: 500;
+  border-radius: 8px;
   word-break: break-all;
 }
 
 .from-user {
   margin-right: 0;
   margin-left: auto;
-  background: #91bbff;
+  background: #bbd4fd;
 }
 
 .sender {
