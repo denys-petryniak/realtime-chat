@@ -5,7 +5,7 @@ import { uploadBytes, getDownloadURL } from '@firebase/storage';
 import { useUserStore } from '@/stores/user';
 import { useMessagesStore } from '@/stores/messages';
 import { Constants } from '@/constants';
-import type { Message } from '@/types';
+import type { StorageReference } from 'firebase/storage';
 
 import UserContainer from '@/components/UserContainer.vue';
 import ChatMessage from '@/components/ChatMessage.vue';
@@ -24,8 +24,8 @@ const userStore = useUserStore();
 const { getUserName } = userStore;
 
 const newMessageText = ref('');
-const newAudio = ref(null);
-const recorder = ref(null);
+const newAudio = ref<Blob | null>(null);
+const recorder = ref<MediaRecorder | null>(null);
 const loading = ref(false);
 
 const getCurrentLocation = computed(() => {
@@ -33,7 +33,7 @@ const getCurrentLocation = computed(() => {
 });
 
 const newAudioURL = computed(() => {
-  return window.URL.createObjectURL(newAudio.value);
+  return newAudio.value ? window.URL.createObjectURL(newAudio.value) : null;
 });
 
 const clearState = () => {
@@ -55,7 +55,9 @@ const addMessage = async (uid: string) => {
 
   if (newAudio.value) {
     try {
-      const audioStorageRef = getAudioStorageRef(getChatId.value);
+      const audioStorageRef: StorageReference = getAudioStorageRef(
+        getChatId.value
+      );
 
       await uploadBytes(audioStorageRef, newAudio.value);
       audioURL = await getDownloadURL(audioStorageRef);
@@ -66,6 +68,7 @@ const addMessage = async (uid: string) => {
 
   await setNewMessageDoc({
     id: getChatId.value,
+    createdAt: Date.now(),
     text: newMessageText.value,
     sender: getUserName,
     audioURL,
@@ -84,12 +87,12 @@ const record = async () => {
   });
 
   const options = { mimeType: 'audio/webm' };
-  const recordedChunks = [];
+  const recordedChunks: Blob[] = [];
   recorder.value = new MediaRecorder(stream, options);
 
   recorder.value.addEventListener('dataavailable', (e) => {
     if (e.data.size > 0) {
-      recordedChunks.push(e.data);
+      recordedChunks.push(e.data as Blob);
     }
   });
 
@@ -101,7 +104,7 @@ const record = async () => {
 };
 
 const stop = async () => {
-  recorder.value.stop();
+  recorder.value?.stop();
   recorder.value = null;
 };
 

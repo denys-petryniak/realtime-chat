@@ -28,10 +28,10 @@ export interface ChatsStore {
 export interface Message {
   uid: string;
   id: string;
-  sender: string;
+  sender: string | undefined;
   createdAt: number;
   text: string;
-  audioURL: string;
+  audioURL: string | null;
 }
 
 export interface MessagesStore {
