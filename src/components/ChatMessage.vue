@@ -1,5 +1,12 @@
 <script setup lang="ts">
-defineProps(['message', 'owner']);
+import type { Message } from '@/types';
+
+interface Props {
+  message: Message;
+  owner: boolean;
+}
+
+defineProps<Props>();
 </script>
 
 <template>

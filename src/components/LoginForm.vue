@@ -6,13 +6,13 @@ import {
   authAnonymously,
   createUserWithEmailAndPasswordHandler,
   signInWithEmailAndPasswordHandler,
-} from '../firebase';
+} from '@/firebase';
 
 const router = useRouter();
 const route = useRoute();
 
-const redirectTo = () => router.push(route.query.redirectTo || '/chats');
-// const redirectTo = () => router.push('/chats');
+const redirectToChatsOrCurrentPath = () =>
+  router.push({ path: route.query.redirectTo?.toString() || '/chats' });
 
 const isNewUser = ref(false);
 const email = ref('');
@@ -24,7 +24,7 @@ const signIn = async () => {
   try {
     await authAnonymously();
 
-    redirectTo();
+    redirectToChatsOrCurrentPath();
   } catch (error) {
     console.error(error);
   }
@@ -46,9 +46,10 @@ const signInOrCreateUser = async () => {
       await signInWithEmailAndPasswordHandler(user);
     }
 
-    redirectTo();
+    redirectToChatsOrCurrentPath();
   } catch (error) {
-    errorMessage.value = error.message;
+    const typedError = error as Error;
+    errorMessage.value = typedError.message;
   }
 
   loading.value = false;

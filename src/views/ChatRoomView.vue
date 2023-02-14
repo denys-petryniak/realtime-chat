@@ -4,14 +4,15 @@ import { useRoute } from 'vue-router';
 import { uploadBytes, getDownloadURL } from '@firebase/storage';
 import { useUserStore } from '@/stores/user';
 import { useMessagesStore } from '@/stores/messages';
-import { Constants } from '../constants';
+import { Constants } from '@/constants';
+import type { Message } from '@/types';
 
 import UserContainer from '@/components/UserContainer.vue';
 import ChatMessage from '@/components/ChatMessage.vue';
 
 const route = useRoute();
 const getChatId = computed(() => {
-  return route.params.id;
+  return route.params.id.toString();
 });
 
 const messagesStore = useMessagesStore();
@@ -41,7 +42,7 @@ const clearState = () => {
   newAudio.value = null;
 };
 
-const addMessage = async (uid) => {
+const addMessage = async (uid: string) => {
   if (messages.value.length >= Constants.MESSAGES_limit) {
     clearState();
     alert(`Max number of messages is ${Constants.MESSAGES_limit}`);
@@ -222,6 +223,5 @@ textarea {
 
 .audio {
   width: 100%;
-  /* background-color: beige; */
 }
 </style>

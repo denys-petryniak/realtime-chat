@@ -1,24 +1,19 @@
 <script setup lang="ts">
 import { addDoc } from 'firebase/firestore';
-import { Constants } from '../constants';
-import type { Chat } from '../types';
+import { Constants } from '@/constants';
+import type { CollectionReference, WithFieldValue } from 'firebase/firestore';
+import type { Chat } from '@/types';
 
 import ChatListItem from '@/components/ChatListItem.vue';
 
-// interface Props {
-//   chatsCollection: string;
-//   chats: Chat[];
-//   uid: string;
-// }
+interface Props {
+  chatsCollection: CollectionReference<Chat>;
+  ownedChats: Chat[];
+  unownedChats: Chat[];
+  uid: string;
+}
 
-// const props = defineProps<Props>();
-
-const props = defineProps([
-  'chatsCollection',
-  'ownedChats',
-  'unownedChats',
-  'uid',
-]);
+const props = defineProps<Props>();
 
 const createChatRoom = async () => {
   if (
@@ -33,7 +28,7 @@ const createChatRoom = async () => {
     createdAt: Date.now(),
     owner: props.uid,
     members: [props.uid],
-  });
+  } as WithFieldValue<Chat>);
 };
 </script>
 

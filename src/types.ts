@@ -51,6 +51,11 @@ export interface MessagesStore {
 }
 
 export interface UserStore {
-  currentUser: any; // temporary
+  currentUser: Ref<any>; // waiting for better typing VueFire
   getUserName: Ref<string | undefined>;
+}
+
+export interface UserCredentials {
+  email: string;
+  password: string;
 }

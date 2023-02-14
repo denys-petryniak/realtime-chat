@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { signOutHandler } from '../firebase';
-
-defineProps(['user']);
+import { signOutHandler } from '@/firebase';
 
 const router = useRouter();
-const route = useRoute();
-
-const redirectTo = () => router.push(route.query.redirectTo || '/');
+const redirectToHome = () => router.push({ path: '/' });
 
 const signOut = async () => {
   try {
     await signOutHandler();
 
-    redirectTo();
+    redirectToHome();
   } catch (error) {
     console.error(error);
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Chat } from '../types';
+import type { Chat } from '@/types';
 
 interface Props {
   chat: Chat;
