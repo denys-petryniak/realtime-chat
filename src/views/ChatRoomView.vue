@@ -33,7 +33,9 @@ const getCurrentLocation = computed(() => {
 });
 
 const newAudioURL = computed(() => {
-  return newAudio.value ? window.URL.createObjectURL(newAudio.value) : null;
+  return newAudio.value
+    ? window.URL.createObjectURL(newAudio.value)
+    : undefined;
 });
 
 const clearState = () => {
@@ -152,7 +154,7 @@ const copyLinkToClipboard = async () => {
           </template>
           <template v-else-if="messages.length">
             <ul class="mb-5">
-              <li v-for="message of messages" :key="message.key" class="mb-2">
+              <li v-for="message of messages" :key="message.uid" class="mb-2">
                 <ChatMessage
                   :message="message"
                   :owner="user.uid === message.uid"
