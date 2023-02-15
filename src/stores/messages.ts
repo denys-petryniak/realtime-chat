@@ -50,7 +50,7 @@ export const useMessagesStore = defineStore('messages', (): MessagesStore => {
   const getAudioStorageRef = (id: string) =>
     storageRef(
       storage,
-      `chats/${id}/${getMessagesCollectionDocRef(id).id}.wav`
+      `chats/${id}/${getMessagesCollectionDocRef(id).id}.mp3`
     );
 
   const setNewMessageDoc = ({ id, text, sender, audioURL, uid }: Message) =>

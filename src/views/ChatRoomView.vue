@@ -194,7 +194,7 @@ const copyLinkToClipboard = async () => {
             </div>
           </div>
           <audio v-if="newAudio" controls class="audio">
-            <source :src="newAudioURL" type="audio/wav" />
+            <source :src="newAudioURL" type="audio/mp3" />
             Your browser does not support the audio element.
           </audio>
         </div>
