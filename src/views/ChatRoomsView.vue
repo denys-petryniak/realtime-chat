@@ -4,7 +4,7 @@ import { useChatsStore } from '@/stores/chats';
 
 import UserContainer from '@/components/UserContainer.vue';
 import UserProfile from '@/components/UserProfile.vue';
-import ChatList from '@/components/ChatsContainer.vue';
+import ChatContainer from '@/components/ChatsContainer.vue';
 
 const userStore = useUserStore();
 const { currentUser } = userStore;
@@ -34,7 +34,7 @@ const { ownedChats, unownedChats, loading, error } = getChats(currentUser?.uid);
               </article>
             </template>
             <template v-else>
-              <ChatList
+              <ChatContainer
                 :owned-chats="ownedChats"
                 :unowned-chats="unownedChats"
                 :uid="user.uid"
