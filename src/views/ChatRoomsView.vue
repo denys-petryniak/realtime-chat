@@ -10,7 +10,7 @@ const userStore = useUserStore();
 const { currentUser } = userStore;
 
 const chatsStore = useChatsStore();
-const { chatsCollection, getChats } = chatsStore;
+const { getChats } = chatsStore;
 const { ownedChats, unownedChats, loading, error } = getChats(currentUser?.uid);
 </script>
 
@@ -35,7 +35,6 @@ const { ownedChats, unownedChats, loading, error } = getChats(currentUser?.uid);
             </template>
             <template v-else>
               <ChatList
-                :chats-collection="chatsCollection"
                 :owned-chats="ownedChats"
                 :unowned-chats="unownedChats"
                 :uid="user.uid"

@@ -1,8 +1,8 @@
 import type { Ref } from 'vue';
 import type {
-  collection,
   DocumentReference,
   DocumentData,
+  CollectionReference,
 } from 'firebase/firestore';
 import type { StorageReference } from 'firebase/storage';
 
@@ -16,7 +16,8 @@ export interface Chat {
 }
 
 export interface ChatsStore {
-  chatsCollection: ReturnType<typeof collection>;
+  // chatsCollection: CollectionReference<Chat>;
+  chatsCollection: CollectionReference<Chat>;
   getChats: (id: string) => {
     ownedChats: Ref<Chat[] | null>;
     unownedChats: Ref<Chat[] | null>;
