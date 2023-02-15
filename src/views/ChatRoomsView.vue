@@ -4,7 +4,7 @@ import { useChatsStore } from '@/stores/chats';
 
 import UserContainer from '@/components/UserContainer.vue';
 import UserProfile from '@/components/UserProfile.vue';
-import ChatList from '@/components/ChatList.vue';
+import ChatList from '@/components/ChatsContainer.vue';
 
 const userStore = useUserStore();
 const { currentUser } = userStore;
