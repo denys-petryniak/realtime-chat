@@ -22,11 +22,17 @@ const { getUserName } = userStore;
 
 <template>
   <div class="is-flex is-align-items-center">
-    <div class="mr-4 is-size-5">
-      Logged in as <code class="has-text-primary">{{ getUserName }}</code>
-    </div>
+    <h3 class="mr-4 is-size-4">
+      Logged in as <span class="user has-text-primary">{{ getUserName }}</span>
+    </h3>
     <button type="button" class="ml-auto button is-info" @click="signOut">
       Sign Out
     </button>
   </div>
 </template>
+
+<style scoped>
+.user {
+  word-break: break-all;
+}
+</style>

@@ -6,7 +6,5 @@ const { currentUser } = userStore;
 </script>
 
 <template>
-  <div>
-    <slot name="user" :user="currentUser" />
-  </div>
+  <slot name="user" :user="currentUser" />
 </template>

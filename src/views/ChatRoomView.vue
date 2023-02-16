@@ -123,27 +123,23 @@ const copyLinkToClipboard = async () => {
 <template>
   <main class="section">
     <div class="is-flex is-align-items-center">
-      <div class="is-size-5">
+      <h3 class="mr-4 is-size-4">
         Welcome to ChatRoom
-        <code class="has-text-primary">{{ getChatId }}</code>
-      </div>
+        <span class="chat has-text-primary">{{ getChatId }}</span>
+      </h3>
       <router-link to="/chats" class="button is-info ml-auto">Back</router-link>
     </div>
     <hr />
-    <div class="mb-5 pl-6 pr-6">
-      <p class="is-size-5 has-text-centered">
-        Open this link in another browser window to chat
-      </p>
-      <p class="is-size-5 has-text-centered">
-        <code
-          class="code has-text-primary"
-          title="Copy to clipboard"
-          @click="copyLinkToClipboard"
-        >
-          {{ getCurrentLocation }}
-        </code>
-      </p>
-    </div>
+    <h4 class="mb-5 pl-4 pr-4 is-size-5 has-text-centered">
+      <span> Open this link in another browser window to chat </span>
+      <span
+        class="link has-text-primary"
+        title="Copy to clipboard"
+        @click="copyLinkToClipboard"
+      >
+        {{ getCurrentLocation }}
+      </span>
+    </h4>
     <UserContainer>
       <template #user="{ user }">
         <div v-if="user" class="box">
@@ -154,12 +150,12 @@ const copyLinkToClipboard = async () => {
           </template>
           <template v-else-if="messages.length">
             <ul class="mb-5">
-              <li v-for="message of messages" :key="message.uid" class="mb-2">
-                <ChatMessage
-                  :message="message"
-                  :owner="user.uid === message.uid"
-                />
-              </li>
+              <ChatMessage
+                v-for="message of messages"
+                :key="message.uid"
+                :message="message"
+                :owner="user.uid === message.uid"
+              />
             </ul>
           </template>
           <template v-else>
@@ -203,14 +199,13 @@ const copyLinkToClipboard = async () => {
   </main>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 ul {
   display: flex;
   flex-direction: column;
-  min-width: 500px;
-  padding: 16px;
-  list-style-type: none;
+  padding: 14px;
   margin: 0;
+  list-style-type: none;
   border-radius: 0;
 }
 
@@ -219,12 +214,21 @@ textarea {
   resize: none;
 }
 
-.code {
-  cursor: pointer;
-  word-break: break-all;
+audio::-webkit-media-controls-panel {
+  background-color: #f9f7f7;
 }
 
 .audio {
   width: 100%;
+}
+
+.chat {
+  word-break: break-all;
+}
+
+.link {
+  display: inline-block;
+  word-break: break-all;
+  cursor: pointer;
 }
 </style>
