@@ -9,6 +9,7 @@ import type { StorageReference } from 'firebase/storage';
 
 import UserContainer from '@/components/UserContainer.vue';
 import ChatMessage from '@/components/ChatMessage.vue';
+import AudioPlayer from '@/components/AudioPlayer.vue';
 
 const route = useRoute();
 const getChatId = computed(() => {
@@ -189,10 +190,7 @@ const copyLinkToClipboard = async () => {
               </button>
             </div>
           </div>
-          <audio v-if="newAudio" controls class="audio">
-            <source :src="newAudioURL" type="audio/mp3" />
-            Your browser does not support the audio element.
-          </audio>
+          <AudioPlayer v-if="newAudio" :src="newAudioURL" class="audio" />
         </div>
       </template>
     </UserContainer>
@@ -212,10 +210,6 @@ ul {
 textarea {
   height: 40px;
   resize: none;
-}
-
-audio::-webkit-media-controls-panel {
-  background-color: #f9f7f7;
 }
 
 .audio {

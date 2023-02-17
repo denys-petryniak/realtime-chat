@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Message } from '@/types';
 
+import AudioPlayer from '@/components/AudioPlayer.vue';
+
 interface Props {
   message: Message;
   owner: boolean;
@@ -12,20 +14,17 @@ defineProps<Props>();
 <template>
   <li class="message mb-2" :class="{ message_owned: owner }">
     <div class="mb-3">{{ message.text }}</div>
-    <audio v-if="message.audioURL" controls class="audio mb-3">
-      <source :src="message.audioURL" type="audio/mp3" />
-      Your browser does not support the audio element.
-    </audio>
+    <AudioPlayer
+      v-if="message.audioURL"
+      :src="message.audioURL"
+      class="audio mb-3"
+    />
     <div class="sender">from {{ message.sender }}</div>
   </li>
 </template>
 
 <style scoped lang="scss">
 $screen--sm: 650px;
-
-audio::-webkit-media-controls-panel {
-  background-color: #f9f7f7;
-}
 
 .message {
   margin-left: 0;
