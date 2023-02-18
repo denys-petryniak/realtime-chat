@@ -31,24 +31,35 @@ export function useMediaRecorder(): MediaRecorderComposable {
 
   const startRecording = async () => {
     try {
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isIOS =
-        /iphone|ipad|ipod|safari/.test(userAgent) && !/chrome/.test(userAgent);
-      const mimeType = isIOS ? 'audio/mpeg' : 'audio/webm';
-
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder.value = new MediaRecorder(stream, {
-        mimeType,
-      });
-      mediaRecorder.value.addEventListener(
+
+      const options = [
+        { mimeType: 'audio/webm' },
+        { mimeType: 'audio/ogg' },
+        { mimeType: 'audio/mpeg' },
+        { mimeType: 'audio/wav' },
+        { mimeType: 'audio/mp3' },
+      ];
+
+      const supportedOption = options.find((option) =>
+        MediaRecorder.isTypeSupported(option.mimeType)
+      );
+
+      if (supportedOption) {
+        mediaRecorder.value = new MediaRecorder(stream, supportedOption);
+      } else {
+        console.error('None of the supported MIME types are available');
+      }
+
+      mediaRecorder.value?.addEventListener(
         'dataavailable',
         handleDataAvailable
       );
-      mediaRecorder.value.addEventListener('stop', handleStop);
+      mediaRecorder.value?.addEventListener('stop', handleStop);
 
       recording.value = true;
 
-      mediaRecorder.value.start();
+      mediaRecorder.value?.start();
     } catch (error) {
       console.error('Error accessing microphone', error);
 
