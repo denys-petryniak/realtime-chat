@@ -42,8 +42,8 @@ export function useMediaRecorder(): MediaRecorderComposable {
         // { mimeType: 'audio/mp4' },
         // { mimeType: 'audio/aac' },
         // { mimeType: 'audio/x-aiff' },
-        // { mimeType: 'audio/webm;codecs=opus' },
-        { mimeType: 'audio/webm;codecs=pcm' },
+        { mimeType: 'audio/webm;codecs=opus' },
+        // { mimeType: 'audio/webm;codecs=pcm' },
         // { mimeType: 'audio/ogg;codecs=opus' },
         // { mimeType: 'audio/mp4;codecs=mp4a' },
       ];
