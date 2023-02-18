@@ -34,18 +34,12 @@ export function useMediaRecorder(): MediaRecorderComposable {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const options = [
-        // { mimeType: 'audio/webm' },
-        // { mimeType: 'audio/ogg' },
-        // { mimeType: 'audio/mpeg' },
-        // { mimeType: 'audio/wav' },
-        // { mimeType: 'audio/mp3' },
-        // { mimeType: 'audio/mp4' },
-        // { mimeType: 'audio/aac' },
-        // { mimeType: 'audio/x-aiff' },
+        { mimeType: 'audio/webm' },
+        { mimeType: 'audio/mpeg' },
+        { mimeType: 'audio/wav' },
+        { mimeType: 'audio/mp3' },
         { mimeType: 'audio/webm;codecs=opus' },
-        // { mimeType: 'audio/webm;codecs=pcm' },
-        // { mimeType: 'audio/ogg;codecs=opus' },
-        // { mimeType: 'audio/mp4;codecs=mp4a' },
+        { mimeType: 'audio/webm;codecs=pcm' },
       ];
 
       const supportedOption = options.find((option) =>
