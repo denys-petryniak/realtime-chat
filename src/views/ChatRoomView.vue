@@ -26,6 +26,7 @@ const { getUserName } = userStore;
 
 const newMessageText = ref('');
 const newAudio = ref<Blob | null>(null);
+const isShowPlayer = ref(false);
 const recorder = ref<MediaRecorder | null>(null);
 const loading = ref(false);
 
@@ -43,6 +44,7 @@ const clearState = () => {
   loading.value = false;
   newMessageText.value = '';
   newAudio.value = null;
+  isShowPlayer.value = false;
 };
 
 const addMessage = async (uid: string) => {
@@ -89,7 +91,6 @@ const record = async () => {
     video: false,
   });
 
-  // const options = { mimeType: 'audio/mpeg' };
   const recordedChunks: Blob[] = [];
   recorder.value = new MediaRecorder(stream);
 
@@ -107,6 +108,7 @@ const record = async () => {
 };
 
 const stop = async () => {
+  isShowPlayer.value = true;
   recorder.value?.stop();
   recorder.value = null;
 };
@@ -190,7 +192,9 @@ const copyLinkToClipboard = async () => {
               </button>
             </div>
           </div>
-          <AudioPlayer v-if="newAudioURL" :src="newAudioURL" class="audio" />
+          <div v-if="isShowPlayer && newAudioURL">
+            <AudioPlayer :src="newAudioURL" />
+          </div>
         </div>
       </template>
     </UserContainer>
@@ -210,10 +214,6 @@ ul {
 textarea {
   height: 40px;
   resize: none;
-}
-
-.audio {
-  width: 100%;
 }
 
 .chat {
