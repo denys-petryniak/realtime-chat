@@ -89,7 +89,7 @@ const record = async () => {
     video: false,
   });
 
-  const options = { mimeType: 'audio/webm' };
+  const options = { mimeType: 'audio/mpeg' };
   const recordedChunks: Blob[] = [];
   recorder.value = new MediaRecorder(stream, options);
 
@@ -190,7 +190,7 @@ const copyLinkToClipboard = async () => {
               </button>
             </div>
           </div>
-          <AudioPlayer v-if="newAudio" :src="newAudioURL" class="audio" />
+          <AudioPlayer v-if="newAudioURL" :src="newAudioURL" class="audio" />
         </div>
       </template>
     </UserContainer>

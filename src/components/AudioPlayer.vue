@@ -11,7 +11,7 @@ defineProps<Props>();
 
 <template>
   <VuePlyr>
-    <audio controls playsinline class="player">
+    <audio controls playsinline>
       <source :src="src" type="audio/mp3" />
     </audio>
   </VuePlyr>
