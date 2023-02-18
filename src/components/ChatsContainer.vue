@@ -40,7 +40,7 @@ const createChatRoom = async () => {
     <ChatList title="Other chats" :chats="unownedChats" />
     <hr />
     <ChatList title="Owned chats" :chats="ownedChats" />
-    <button type="button" class="button is-info" @click="createChatRoom">
+    <button type="button" class="button is-info mt-4" @click="createChatRoom">
       Create New Chat Room
     </button>
   </div>
