@@ -31,12 +31,13 @@ export const useMessagesStore = defineStore('messages', (): MessagesStore => {
     );
 
   const getMessages = (id: string) => {
-    const { data: messages, promise: messagesPromise } = useCollection<Message>(
-      getMessagesQuery(id),
-      {
-        wait: true,
-      }
-    );
+    const {
+      data: messages,
+      promise: messagesPromise,
+      error,
+    } = useCollection<Message>(getMessagesQuery(id), {
+      wait: true,
+    });
 
     const loading = ref(true);
 
@@ -44,7 +45,7 @@ export const useMessagesStore = defineStore('messages', (): MessagesStore => {
       loading.value = false;
     });
 
-    return { messages, loading };
+    return { messages, loading, error };
   };
 
   const getAudioStorageRef = (id: string) =>

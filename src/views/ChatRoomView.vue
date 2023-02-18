@@ -20,7 +20,11 @@ const getChatId = computed(() => {
 const messagesStore = useMessagesStore();
 const { getMessages, setNewMessageDoc, getAudioStorageRef } = messagesStore;
 
-const { messages, loading: isMessagesLoading } = getMessages(getChatId.value);
+const {
+  messages,
+  loading: isMessagesLoading,
+  error: messagesError,
+} = getMessages(getChatId.value);
 
 const userStore = useUserStore();
 const { getUserName } = userStore;
@@ -120,6 +124,11 @@ const copyLinkToClipboard = async () => {
               <div class="message-body">Loading...</div>
             </article>
           </template>
+          <template v-else-if="messagesError">
+            <article class="message is-info">
+              <div class="message-body">{{ messagesError }}</div>
+            </article>
+          </template>
           <template v-else-if="messages.length">
             <ul class="mb-5">
               <ChatMessage
@@ -168,6 +177,9 @@ const copyLinkToClipboard = async () => {
           <div v-if="newAudioURL">
             <AudioPlayer :src="newAudioURL" />
           </div>
+          <article v-if="recordingData.error" class="message is-info">
+            <div class="message-body">{{ recordingData.error }}</div>
+          </article>
         </div>
       </template>
     </UserContainer>

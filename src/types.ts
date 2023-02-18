@@ -3,6 +3,7 @@ import type {
   DocumentReference,
   DocumentData,
   CollectionReference,
+  FirestoreError,
 } from 'firebase/firestore';
 import type { StorageReference } from 'firebase/storage';
 
@@ -40,6 +41,7 @@ export interface MessagesStore {
   getMessages: (id: string) => {
     messages: Ref<Message[]>;
     loading: Ref<boolean>;
+    error: Ref<FirestoreError | undefined>;
   };
   getAudioStorageRef: (id: string) => StorageReference;
   setNewMessageDoc: ({
