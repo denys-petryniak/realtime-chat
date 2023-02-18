@@ -5,28 +5,37 @@ import type { RecordingData, MediaRecorderComposable } from '@/types';
 export function useMediaRecorder(): MediaRecorderComposable {
   const mediaRecorder = ref<MediaRecorder | null>(null);
   const recordedChunks = ref<Blob[]>([]);
-  const recording = ref(false);
-  const error = ref<Error | null>(null);
+
+  const recordingData: Ref<RecordingData> = ref({
+    blob: null,
+    recording: false,
+    error: null,
+  });
 
   const handleDataAvailable = (event: BlobEvent) => {
     recordedChunks.value.push(event.data);
   };
 
   const handleStop = () => {
-    recording.value = false;
-    const recordedBlob = new Blob(recordedChunks.value, { type: 'audio/mp3' });
+    const recordedBlob = new Blob(recordedChunks.value, {
+      type: 'audio/mp3',
+    });
     mediaRecorder.value = null;
 
     if (recordedBlob.size === 0) {
-      error.value = new Error('Empty recording');
+      recordingData.value = {
+        error: new Error('Empty recording'),
+      };
+
       return;
     }
 
     recordingData.value = {
       blob: recordedBlob,
       recording: false,
-      error: null,
     };
+
+    recordedChunks.value = [];
   };
 
   const startRecording = async () => {
@@ -64,7 +73,9 @@ export function useMediaRecorder(): MediaRecorderComposable {
       );
       mediaRecorder.value?.addEventListener('stop', handleStop);
 
-      recording.value = true;
+      recordingData.value = {
+        recording: true,
+      };
 
       mediaRecorder.value?.start();
     } catch (error) {
@@ -81,15 +92,12 @@ export function useMediaRecorder(): MediaRecorderComposable {
   const stopRecording = () => {
     if (mediaRecorder.value && mediaRecorder.value.state !== 'inactive') {
       mediaRecorder.value.stop();
-      recording.value = false;
+
+      recordingData.value = {
+        recording: false,
+      };
     }
   };
-
-  const recordingData: Ref<RecordingData> = ref({
-    blob: null,
-    recording,
-    error: null,
-  });
 
   return {
     recordingData,

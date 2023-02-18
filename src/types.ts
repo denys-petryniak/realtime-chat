@@ -62,9 +62,9 @@ export interface UserCredentials {
 }
 
 export interface RecordingData {
-  blob: Blob | null;
-  recording: boolean;
-  error: Error | null;
+  blob?: Blob | null;
+  recording?: boolean;
+  error?: Error | null;
 }
 
 export interface MediaRecorderComposable {
