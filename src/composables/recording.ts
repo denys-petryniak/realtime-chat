@@ -31,9 +31,14 @@ export function useMediaRecorder(): MediaRecorderComposable {
 
   const startRecording = async () => {
     try {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isIOS =
+        /iphone|ipad|ipod|safari/.test(userAgent) && !/chrome/.test(userAgent);
+      const mimeType = isIOS ? 'audio/mpeg' : 'audio/webm';
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder.value = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus',
+        mimeType,
       });
       mediaRecorder.value.addEventListener(
         'dataavailable',
