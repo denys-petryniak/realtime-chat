@@ -89,9 +89,9 @@ const record = async () => {
     video: false,
   });
 
-  const options = { mimeType: 'audio/mpeg' };
+  // const options = { mimeType: 'audio/mpeg' };
   const recordedChunks: Blob[] = [];
-  recorder.value = new MediaRecorder(stream, options);
+  recorder.value = new MediaRecorder(stream);
 
   recorder.value.addEventListener('dataavailable', (e) => {
     if (e.data.size > 0) {
