@@ -14,11 +14,7 @@ defineProps<Props>();
 <template>
   <li class="message mb-2" :class="{ message_owned: owner }">
     <div class="mb-3">{{ message.text }}</div>
-    <AudioPlayer
-      v-if="message.audioURL"
-      :src="message.audioURL"
-      class="audio mb-3"
-    />
+    <AudioPlayer v-if="message.audioURL" :src="message.audioURL" />
     <div class="sender">from {{ message.sender }}</div>
   </li>
 </template>
@@ -41,23 +37,19 @@ $screen--sm: 650px;
     margin-left: auto;
     background-color: #bbd4fd;
   }
+
+  ::v-deep(.plyr) {
+    margin-bottom: 12px;
+  }
 }
 
 .sender {
   font-size: 0.5rem;
 }
 
-.audio {
-  width: 200px;
-}
-
 @media (min-width: $screen--sm) {
   .message {
     max-width: 50%;
-  }
-
-  .audio {
-    width: 300px;
   }
 }
 </style>
