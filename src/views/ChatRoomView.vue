@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { uploadBytes, getDownloadURL } from '@firebase/storage';
 import { useUserStore } from '@/stores/user';
 import { useMessagesStore } from '@/stores/messages';
+import { useMediaRecorder } from '@/composables/recording';
 import { Constants } from '@/constants';
 import type { StorageReference } from 'firebase/storage';
 
@@ -24,27 +25,25 @@ const { messages, loading: isMessagesLoading } = getMessages(getChatId.value);
 const userStore = useUserStore();
 const { getUserName } = userStore;
 
+const { recordingData, startRecording, stopRecording } = useMediaRecorder();
+
 const newMessageText = ref('');
-const newAudio = ref<Blob | null>(null);
-const isShowPlayer = ref(false);
-const recorder = ref<MediaRecorder | null>(null);
-const loading = ref(false);
+const isMessageLoading = ref(false);
 
 const getCurrentLocation = computed(() => {
   return window.location.href;
 });
 
 const newAudioURL = computed(() => {
-  return newAudio.value
-    ? window.URL.createObjectURL(newAudio.value)
+  return recordingData.value.blob
+    ? window.URL.createObjectURL(recordingData.value.blob)
     : undefined;
 });
 
 const clearState = () => {
-  loading.value = false;
   newMessageText.value = '';
-  newAudio.value = null;
-  isShowPlayer.value = false;
+  recordingData.value.blob = null;
+  isMessageLoading.value = false;
 };
 
 const addMessage = async (uid: string) => {
@@ -54,17 +53,17 @@ const addMessage = async (uid: string) => {
     return;
   }
 
-  loading.value = true;
+  isMessageLoading.value = true;
 
   let audioURL = null;
 
-  if (newAudio.value) {
+  if (recordingData.value.blob) {
     try {
       const audioStorageRef: StorageReference = getAudioStorageRef(
         getChatId.value
       );
 
-      await uploadBytes(audioStorageRef, newAudio.value);
+      await uploadBytes(audioStorageRef, recordingData.value.blob);
       audioURL = await getDownloadURL(audioStorageRef);
     } catch (error) {
       console.error(error);
@@ -81,36 +80,6 @@ const addMessage = async (uid: string) => {
   });
 
   clearState();
-};
-
-const record = async () => {
-  newAudio.value = null;
-
-  const stream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: false,
-  });
-
-  const recordedChunks: Blob[] = [];
-  recorder.value = new MediaRecorder(stream);
-
-  recorder.value.addEventListener('dataavailable', (e) => {
-    if (e.data.size > 0) {
-      recordedChunks.push(e.data as Blob);
-    }
-  });
-
-  recorder.value.addEventListener('stop', () => {
-    newAudio.value = new Blob(recordedChunks);
-  });
-
-  recorder.value.start();
-};
-
-const stop = async () => {
-  isShowPlayer.value = true;
-  recorder.value?.stop();
-  recorder.value = null;
 };
 
 const copyLinkToClipboard = async () => {
@@ -176,7 +145,9 @@ const copyLinkToClipboard = async () => {
             <div class="buttons is-flex-wrap-nowrap">
               <button
                 type="button"
-                :disabled="(!newMessageText && !newAudio) || loading"
+                :disabled="
+                  (!newMessageText && !recordingData.blob) || isMessageLoading
+                "
                 class="button is-success"
                 @click="addMessage(user.uid)"
               >
@@ -184,15 +155,17 @@ const copyLinkToClipboard = async () => {
               </button>
               <button
                 type="button"
-                :class="recorder ? 'is-danger' : 'is-primary'"
+                :class="recordingData.recording ? 'is-danger' : 'is-primary'"
                 class="button"
-                @click="recorder ? stop() : record()"
+                @click="
+                  recordingData.recording ? stopRecording() : startRecording()
+                "
               >
-                {{ recorder ? 'Stop' : 'Record' }}
+                {{ recordingData.recording ? 'Stop' : 'Record' }}
               </button>
             </div>
           </div>
-          <div v-if="isShowPlayer && newAudioURL">
+          <div v-if="newAudioURL">
             <AudioPlayer :src="newAudioURL" />
           </div>
         </div>

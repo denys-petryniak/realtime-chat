@@ -60,3 +60,15 @@ export interface UserCredentials {
   email: string;
   password: string;
 }
+
+export interface RecordingData {
+  blob: Blob | null;
+  recording: boolean;
+  error: Error | null;
+}
+
+export interface MediaRecorderComposable {
+  recordingData: Ref<RecordingData>;
+  startRecording: () => void;
+  stopRecording: () => void;
+}
