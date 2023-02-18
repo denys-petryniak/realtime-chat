@@ -33,8 +33,7 @@ export function useMediaRecorder(): MediaRecorderComposable {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder.value = new MediaRecorder(stream, {
-        mimeType: 'audio/webm',
-        // audio/webm;codecs=opus
+        mimeType: 'audio/webm;codecs=opus',
       });
       mediaRecorder.value.addEventListener(
         'dataavailable',
