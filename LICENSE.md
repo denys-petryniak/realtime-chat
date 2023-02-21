@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2023 Denys Petryniak
+Copyright (c) 2023-PRESENT Denys Petryniak
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
