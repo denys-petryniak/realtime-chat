@@ -1,5 +1,7 @@
 # Realtime Voice Chat
 
+![image](https://github.com/denys-petryniak/realtime-chat/assets/16530588/255ae0c1-1fe4-46ef-af85-56c650d3fff7)
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
