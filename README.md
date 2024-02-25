@@ -1,8 +1,14 @@
 # Realtime Voice Chat
 
-![image](https://github.com/denys-petryniak/realtime-chat/assets/16530588/255ae0c1-1fe4-46ef-af85-56c650d3fff7)
+<img src="https://github.com/denys-petryniak/realtime-chat/assets/16530588/255ae0c1-1fe4-46ef-af85-56c650d3fff7" alt="image" width="650">
+
+## Explore in StackBlitz
+
+Click the button below to open the project in StackBlitz for preview and experimentation:
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/denys-petryniak/realtime-chat)
+
+Feel free to explore the code, make changes, and see the results in real-time!
 
 ## Recommended IDE Setup
 
